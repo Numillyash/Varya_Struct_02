@@ -16,10 +16,8 @@ typedef struct _dbElement
 	time_t* start_tm;
 	// Время окончания тестирования
 	time_t* end_tm;
-	// Множество: пройденные тесты
-	char** result;
-	// Размер множества пройденных тестов
-	int result_count;
+	// Множество: пройденные тесты (99)
+	int* result;
 	// Следующий элемент списка
 	struct _dbElement* nextElement;
 }DataBaseElement;
@@ -27,7 +25,7 @@ typedef struct _dbElement
 DataBaseElement* head;
 uint64_t dataBaseSize = 0;
 
-int putElementToDB(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, char** results, int resultCount)
+int putElementToDB(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, int results[99])
 {
 	DataBaseElement* newElement = (DataBaseElement*)malloc(sizeof(DataBaseElement));
 	if (newElement == NULL)
@@ -40,7 +38,6 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 	newElement->result = results;
 	newElement->start_tm = startTime;
 	newElement->end_tm = endTime;
-	newElement->result_count = resultCount;
 	newElement->nextElement = NULL;
 
 	if (head != NULL)
@@ -88,10 +85,11 @@ void printElement(DataBaseElement* elem)
 		elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
 	printf("%s\t", asctime(gmtime(elem->start_tm)));
 	printf("%s\tResults\n", asctime(gmtime(elem->end_tm)));
-	for (int i = 0; i < elem->result_count; i++)
+	/*for (int i = 0; i < 99; i++)
 	{
-		printf("\t\t%s\n", elem->result[i]);
-	}
+		printf("%d ", elem->result[i]);
+	}*/
+	printf("\n");
 }
 
 void printDataBase()
@@ -104,66 +102,83 @@ void printDataBase()
 	}
 }
 
-int deleteElementsWithParametres(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, char** results, int resultCount)
+int isResultsSame(DataBaseElement* e1, DataBaseElement* e2)
 {
-	DataBaseElement* etalon = (DataBaseElement*)malloc(sizeof(DataBaseElement));
-	if (etalon == NULL)
-		return ALLOC_FAILURE;
-	mallocCount++;
-	etalon->first_nm = firstName;
-	etalon->last_nm = lastName;
-	etalon->curse_id = course;
-	etalon->lab_id = labID;
-	etalon->result = results;
-	etalon->start_tm = startTime;
-	etalon->end_tm = endTime;
-	etalon->result_count = resultCount;
-	etalon->nextElement = NULL;
+	for (int i = 0; i < 99; i++)
+	{
+		if (e1->result[i] != e2->result[i])
+			return 0;
+	}
+	return 1;
+}
 
-	int lastElement = -1;
+int deleteNonUniqElements()
+{
+	char* needToDel = (char*)malloc(sizeof(char)*dataBaseSize);
+	mallocCount++;
 
 	// Цикл проверок
 	DataBaseElement* tmp = head;
+	DataBaseElement* tmp2 = head;
 	int currInd = 0;
 	while (tmp != NULL)
 	{
-		if (etalon->last_nm == NULL || !strcmp(etalon->last_nm, tmp->last_nm))
-			if (etalon->first_nm == NULL || !strcmp(etalon->first_nm, tmp->first_nm))
-				if (etalon->curse_id == NULL || etalon->curse_id == tmp->curse_id)
-					if (etalon->lab_id == NULL || etalon->lab_id == tmp->lab_id)
-						if (etalon->start_tm == NULL || etalon->start_tm == tmp->start_tm)
-							if (etalon->end_tm == NULL || etalon->end_tm == tmp->end_tm)
-							{
-								lastElement = currInd;
-							}
-		// Добавить сравнение по тестам
+		tmp2 = tmp->nextElement;
+		while (tmp2 != NULL)
+		{
+			if (!strcmp(tmp->last_nm, tmp2->last_nm))
+				if (!strcmp(tmp->first_nm, tmp2->first_nm))
+					if (tmp->curse_id == tmp2->curse_id)
+						if (tmp->lab_id == tmp2->lab_id)
+							if (tmp->start_tm == tmp2->start_tm)
+								if (tmp->end_tm == tmp2->end_tm)
+									if (isResultsSame(tmp, tmp2))
+									{
+										needToDel[currInd] = 1;
+									}
+			// Добавить сравнение по тестам
+			tmp2 = tmp2->nextElement;
+		}
 		tmp = tmp->nextElement;
 		currInd++;
 	}
 
+	//for (uint64_t i = 0; i < dataBaseSize; i++)
+	//		printf("%d ", needToDel[i]);
+
+	//for (uint64_t i = 0; i < dataBaseSize; i++)
+	//	if(needToDel[i] == 1)
+	//		printf("\nDB elemeny number %d is need to delete", i+1);
+
+	int add = 0;
 	currInd = 0;
-
 	tmp = head;
-	while (tmp != NULL)
+	while (tmp == head && needToDel[add+currInd] == 1)
 	{
-		if (etalon->last_nm == NULL || !strcmp(etalon->last_nm, tmp->last_nm))
-			if (etalon->first_nm == NULL || !strcmp(etalon->first_nm, tmp->first_nm))
-				if (etalon->curse_id == NULL || etalon->curse_id == tmp->curse_id)
-					if (etalon->lab_id == NULL || etalon->lab_id == tmp->lab_id)
-						if (etalon->start_tm == NULL || etalon->start_tm == tmp->start_tm)
-							if (etalon->end_tm == NULL || etalon->end_tm == tmp->end_tm)
-								if (currInd != lastElement)
-								{
-									DataBaseElement* tmp2 = tmp;
-									tmp = tmp->nextElement;
-									deleteElementFromDB(tmp2);
-									lastElement--;
-									continue;
-								}
-
-		// Добавить сравнение по тестам
-		tmp = tmp->nextElement;
-		currInd++;
+		deleteElementFromDB(head);
+		tmp = head;
+		add++;
 	}
+	while (tmp != NULL && tmp->nextElement!= NULL)
+	{
+		if (needToDel[add + currInd + 1] == 1)
+		{
+			deleteElementFromDB(tmp->nextElement);
+			add++;
+		}
+		else
+		{
+			tmp = tmp->nextElement;
+			currInd++;
+		}
 
+	}
 }
+
+//struct condition
+//{
+//	field;
+//	enum
+//	int
+//	char**
+//};

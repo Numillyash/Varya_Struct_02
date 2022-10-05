@@ -6,18 +6,25 @@
 int main()
 {
 	time_t now = time(NULL);
-	char *stroks[20] = { "Test 1", "Test 2", "Test 3", "Test 4"};
-	putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks, 3);
-	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks, 3);
-	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks, 3);
+	int stroks[99];
 
-	putElementToDB("Baranova", "Varvara", 2, 1, &now, &now, stroks, 2);
+	for (int i = 0; i < 99; i++)
+		stroks[i] = i % 3 == 1 ? 1 : 0;
 
-	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks, 4);
+	putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks);
+
+	putElementToDB("Baranova", "Varvara", 2, 1, &now, &now, stroks);
+
+	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks);
+
+	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks);
 
 	printDataBase();
 
-	deleteElementsWithParametres("Ulanovsky", NULL, NULL, 1, NULL, NULL, NULL, NULL);
+	deleteNonUniqElements();
 
 	printDataBase();
 

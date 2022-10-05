@@ -26,5 +26,8 @@
     <ClInclude Include="db_struct.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="malloc_count.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

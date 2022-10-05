@@ -8,21 +8,17 @@ int main()
 	time_t now = time(NULL);
 	char *stroks[20] = { "Test 1", "Test 2", "Test 3", "Test 4"};
 	putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks, 3);
+	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks, 3);
+	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks, 3);
 
 	putElementToDB("Baranova", "Varvara", 2, 1, &now, &now, stroks, 2);
 
 	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks, 4);
 
 	printDataBase();
+
+	deleteElementsWithParametres("Ulanovsky", NULL, NULL, 1, NULL, NULL, NULL, NULL);
+
+	printDataBase();
+
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.

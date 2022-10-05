@@ -11,13 +11,14 @@ typedef struct _dbElement
 	time_t* start_tm;
 	time_t* end_tm;
 	char** result;
+	int result_count;
 	struct _dbElement* nextElement;
 }DataBaseElement;
 
 DataBaseElement* head;
 uint64_t dataBaseSize = 0;
 
-int putElementToDB(char* lastName, char* firstName, int course, int labID, time_t *startTime, time_t *endTime, char** results)
+int putElementToDB(char* lastName, char* firstName, int course, int labID, time_t *startTime, time_t *endTime, char** results, int resultCount)
 {
 	DataBaseElement* newElement = (DataBaseElement*)malloc(sizeof(DataBaseElement));
 	newElement->first_nm = firstName;
@@ -27,6 +28,7 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 	newElement->result = results;
 	newElement->start_tm = startTime;
 	newElement->end_tm = endTime;
+	newElement->result_count = resultCount;
 	newElement->nextElement = NULL;
 
 	if (head != NULL)
@@ -44,4 +46,26 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 	}
 
 	dataBaseSize++;
+}
+
+void printElement(DataBaseElement* elem)
+{
+	printf("Element:\n\tFirst name: %s\n\tLast name: %s\n\tCourse: %d\n\tLab number: %d\n\t", 
+		elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
+	printf("%s\t", asctime(gmtime(elem->start_tm)));
+	printf("%s\tResults\n", asctime(gmtime(elem->end_tm)));
+	for (int i = 0; i < elem->result_count; i++)
+	{
+		printf("\t\t%s\n", elem->result[i]);
+	}
+}
+
+void printDataBase()
+{
+	DataBaseElement* tmp = head;
+	while (tmp != NULL)
+	{
+		printElement(tmp);
+		tmp = tmp->nextElement;
+	}
 }

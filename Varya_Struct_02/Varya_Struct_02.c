@@ -24,8 +24,11 @@ int main()
 
 	printDataBase();
 
-	deleteNonUniqElements();
+	printf("uniq:%d \n", deleteNonUniqElements());
 
-	printDataBase();
+	Condition a;
+	a.condition;
+
+	//printDataBase();
 
 }

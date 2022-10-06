@@ -28,10 +28,12 @@ int main()
 
 	printf("uniq:%d \n", deleteNonUniqElements());
 
-	char selects[7] = { 1, 5, 3, -1, -1, -1, -1 };
+	char selects[7] = { 0, 5, 3, -1, -1, -1, -1 };
 
 	Condition a = { moreEqual, 2, 0, NULL, 0, NULL };
 	Condition* conditions[7] = {NULL, NULL, NULL, &a, NULL, NULL, NULL};
+	printf("\nselect:%d \n", selectFunc(selects, conditions));
+	printf("\nupdate:%d \n", updateFunc("TeStNaMe", NULL, -1, -1, NULL, NULL, NULL, conditions));
 	printf("\nselect:%d \n", selectFunc(selects, conditions));
 
 	//printDataBase();

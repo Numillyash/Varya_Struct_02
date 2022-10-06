@@ -17,6 +17,8 @@ int main()
 	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks);
 
 	putElementToDB("Baranova", "Varvara", 2, 1, &now, &now, stroks);
+	putElementToDB("Baranova", "Varvara", 2, 4, &now, &now, stroks);
+	putElementToDB("Baranova", "Varvara", 2, 3, &now, &now, stroks);
 
 	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks);
 
@@ -26,8 +28,11 @@ int main()
 
 	printf("uniq:%d \n", deleteNonUniqElements());
 
-	Condition a;
-	a.condition;
+	char selects[7] = { 1, 5, 3, -1, -1, -1, -1 };
+
+	Condition a = { moreEqual, 2, 0, NULL, 0, NULL };
+	Condition* conditions[7] = {NULL, NULL, NULL, &a, NULL, NULL, NULL};
+	printf("\nselect:%d \n", selectFunc(selects, conditions));
 
 	//printDataBase();
 

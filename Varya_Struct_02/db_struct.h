@@ -131,22 +131,22 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->curse_id <= conditions[2]->compInt)
-				return 0;
+				return 0; break;
 		case moreEqual:
 			if (elem->curse_id < conditions[2]->compInt)
-				return 0;
+				return 0; break;
 		case less:
 			if (elem->curse_id >= conditions[2]->compInt)
-				return 0;
+				return 0; break;
 		case lessEqual:
 			if (elem->curse_id > conditions[2]->compInt)
-				return 0;
+				return 0; break;
 		case equal:
 			if (elem->curse_id != conditions[2]->compInt)
-				return 0;
+				return 0; break;
 		case notEqual:
 			if (elem->curse_id == conditions[2]->compInt)
-				return 0;
+				return 0; break;
 		default:
 			break;
 		}
@@ -158,22 +158,22 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->lab_id <= conditions[3]->compInt)
-				return 0;
+				return 0; break;
 		case moreEqual:
 			if (elem->lab_id < conditions[3]->compInt)
-				return 0;
+				return 0; break;
 		case less:
 			if (elem->lab_id >= conditions[3]->compInt)
-				return 0;
+				return 0; break;
 		case lessEqual:
 			if (elem->lab_id > conditions[3]->compInt)
-				return 0;
+				return 0; break;
 		case equal:
 			if (elem->lab_id != conditions[3]->compInt)
-				return 0;
+				return 0; break;
 		case notEqual:
 			if (elem->lab_id == conditions[3]->compInt)
-				return 0;
+				return 0; break;
 		default:
 			break;
 		}
@@ -185,22 +185,22 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->start_tm <= conditions[4]->compTime)
-				return 0;
+				return 0; break;
 		case moreEqual:
 			if (elem->start_tm < conditions[4]->compTime)
-				return 0;
+				return 0; break;
 		case less:
 			if (elem->start_tm >= conditions[4]->compTime)
-				return 0;
+				return 0; break;
 		case lessEqual:
 			if (elem->start_tm > conditions[4]->compTime)
-				return 0;
+				return 0; break;
 		case equal:
 			if (elem->start_tm != conditions[4]->compTime)
-				return 0;
+				return 0; break;
 		case notEqual:
 			if (elem->start_tm == conditions[4]->compTime)
-				return 0;
+				return 0; break;
 		default:
 			break;
 		}
@@ -212,22 +212,22 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->end_tm <= conditions[5]->compTime)
-				return 0;
+				return 0; break;
 		case moreEqual:
 			if (elem->end_tm < conditions[5]->compTime)
-				return 0;
+				return 0; break;
 		case less:
 			if (elem->end_tm >= conditions[5]->compTime)
-				return 0;
+				return 0; break;
 		case lessEqual:
 			if (elem->end_tm > conditions[5]->compTime)
-				return 0;
+				return 0; break;
 		case equal:
 			if (elem->end_tm != conditions[5]->compTime)
-				return 0;
+				return 0; break;
 		case notEqual:
 			if (elem->end_tm == conditions[5]->compTime)
-				return 0;
+				return 0; break;
 		default:
 			break;
 		}
@@ -239,16 +239,16 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case resultsAreOnly:
 			if (!isResultsOneOnly(elem, conditions[6]))
-				return 0;
+				return 0; break;
 		case resultsNotIncludeBoth:
 			if (!isResultsNotIncludeBoth(elem, conditions[6]))
-				return 0;
+				return 0; break;
 		case resultsIncludeBoth:
 			if (!isResultsIncludeBoth(elem, conditions[6]))
-				return 0;
+				return 0; break;
 		case resultsIncludeAtLeastOne:
 			if (!isResultsIncludeAtLeastOne(elem, conditions[6]))
-				return 0;
+				return 0; break;
 		}
 	}
 	return 1;
@@ -395,10 +395,93 @@ int deleteNonUniqElements()
 	return add;
 }
 
-//struct condition
-//{
-//	field;
-//	enum
-//	int
-//	char**
-//};
+int deleteFunc(Condition* conditions)
+{
+	int count = 0;
+	DataBaseElement* tmp;
+restartCycle:
+	tmp = head;
+	while (tmp != NULL)
+	{
+		if (isElementRespondConditions(tmp, conditions))
+		{
+			goto restartCycle;
+			deleteElementFromDB(tmp);
+			count++;
+		}
+		tmp = tmp->nextElement;
+	}
+	return count;
+}
+
+char* formateTime(time_t time)
+{
+	char* string = asctime(gmtime(time));
+	char* symb = strchr(string, '\n');
+	*symb = '\0';
+	return string;
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="whatToPrint">Указываются номера как порядок выводимых значений
+/// ,-1 для пустых мест (НЕ NULL)
+/// </param>
+/// <param name="conditions"></param>
+int selectFunc(char whatToPrint[7], Condition* conditions[7])
+{
+	int count = 0;
+	DataBaseElement* tmp;
+	tmp = head;
+	while (tmp != NULL)
+	{
+		if (isElementRespondConditions(tmp, conditions))
+		{
+			for (int i = 0; i < 7; i++)
+			{
+				switch (whatToPrint[i]) {
+				case 0:
+					printf("last_nm:%s ", tmp->last_nm);
+					break;
+				case 1:
+					printf("first_nm:%s ", tmp->first_nm);
+					break;
+				case 2:
+					printf("curse:%d ", tmp->curse_id);
+					break;
+				case 3:
+					printf("lab_id:%d ", tmp->lab_id);
+					break;
+				case 4:
+					printf("start_tm:%s ", formateTime(tmp->start_tm));
+					break;
+				case 5:
+					printf("end_tm:%s ", formateTime(tmp->end_tm));
+					break;
+				case 6:
+					for (int j = 0; j < 99; j++)
+					{
+						printf("result:[ ");
+						if (tmp->result[j] == 1)
+						{
+							if(j > 9)
+								printf("test%d, ", j+1);
+							else
+								printf("test0%d, ", j + 1);
+						}
+						printf("]");
+					}					
+					break;
+				case -1:
+					break;
+				}
+			}
+
+			printf("\n");
+			count++;
+		}
+		tmp = tmp->nextElement;
+	}
+	return count;
+}

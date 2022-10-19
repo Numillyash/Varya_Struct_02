@@ -1,0 +1,4 @@
+malloc:9
+relloc:0
+calloc:0
+free:0

@@ -14,6 +14,6 @@ void saveStats()
 		exit(MALLOC_SAVE_FAILURE);
 	}
 
-	fprintf("malloc:%d\nrelloc:%d\ncalloc:%d\nfree:%d", mallocCount, reallocCount, callocCount, freeCount);
+	fprintf(file, "malloc:%d\nrelloc:%d\ncalloc:%d\nfree:%d", mallocCount, reallocCount, callocCount, freeCount);
 
 }

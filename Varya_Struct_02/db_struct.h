@@ -426,7 +426,7 @@ restartCycle:
 
 char* formateTime(time_t time)
 {
-	char* string = asctime(gmtime(time));
+	char* string = asctime(gmtime(&time));
 	char* symb = strchr(string, '\n');
 	*symb = '\0';
 	return string;

@@ -12,7 +12,7 @@ int workMode(char* y)
 	return -1;
 }
 
-void parceCondition();
+
 
 int isField(char* str)
 {
@@ -81,7 +81,7 @@ int parceField(char* line, int* _field_num, char** _string, int* _int, time_t** 
 				breakdown.tm_year = year - 1900; /* years since 1900 */
 				breakdown.tm_mon = month - 1;
 				breakdown.tm_mday = day;
-				breakdown.tm_hour = hour+3;
+				breakdown.tm_hour = hour + 3;
 				breakdown.tm_min = min;
 				breakdown.tm_sec = sec;
 
@@ -108,6 +108,85 @@ int parceField(char* line, int* _field_num, char** _string, int* _int, time_t** 
 	}
 	else
 		return -1;
+}
+
+int parceCondition(char* line, Condition* conditions[7])
+{
+	int x = !strncmp(line, "result", 6);
+	if (x)
+	{
+		// обработка ресультов
+	}
+	else
+	{
+		char buf[50], buf2[50];
+		strcpy(buf, line);
+		char* st1 = strtok(buf, "<>!=");
+		char* st2 = strtok(NULL, "<>!=");
+		strcpy(buf2, line);
+		char* usl = strtok(buf2, "qwertyuiop[]asdfghjkl;'zxcvbnm,./1234567890-+_");
+		Condition* a = (Condition*)malloc(sizeof(Condition));
+		x = isField(st1);
+		if (x == -1)
+			return -1;
+		conditions[x] = a;
+		int st1Len = strlen(st1), i= 0;
+		switch (x)
+		{
+		case 0:
+		case 1:
+			//
+			return 1;
+		case 2:
+		case 3:
+			i = atoi(st2);
+			a->compInt = i;
+			if (!strcmp(">=", usl))
+				a->condition = moreEqual;
+			else if (!strcmp(">", usl))
+				a->condition = more;
+			else if (!strcmp("<=", usl))
+				a->condition = lessEqual;
+			else if (!strcmp("<", usl))
+				a->condition = less;
+			else if (!strcmp("==", usl))
+				a->condition = equal;
+			else if (!strcmp("!=", usl))
+				a->condition = notEqual;
+			else
+				return -1;
+			return 1;
+		case 4:
+		case 5:
+			;
+			time_t result = 0;
+			int year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
+			if (sscanf(st2, "%4d.%2d.%2d!%2d:%2d:%2d", &year, &month, &day, &hour, &min, &sec) == 6) {
+				struct tm breakdown = { 0 };
+				breakdown.tm_year = year - 1900; /* years since 1900 */
+				breakdown.tm_mon = month - 1;
+				breakdown.tm_mday = day;
+				breakdown.tm_hour = hour + 3;
+				breakdown.tm_min = min;
+				breakdown.tm_sec = sec;
+
+				if ((result = mktime(&breakdown)) == (time_t)-1) {
+					return -1;
+				}
+
+				//puts(ctime(&result));
+				//printf("%s %d\n", formateTime(&result), result);
+				a->compTime = result;
+				return 1;
+			}
+			else {
+				return -1;
+			}
+			return 1;
+		default:
+			break;
+		}
+	}
 }
 
 int getWordsAndCount(char* line, char*** arr)
@@ -168,7 +247,7 @@ void parceLine(char* input)
 	int ints[2] = { 0,0 };
 	int f_num = -1;
 	int _int = -1;
-	time_t* tim = NULL, start = 0, end=0;
+	time_t* tim = NULL, start = 0, end = 0;
 	int stroks[99];
 
 	if (lixCount != 0) {
@@ -179,7 +258,7 @@ void parceLine(char* input)
 			if (lixCount != 8) {
 				error(input); exit(100);
 			}
-			
+
 			for (int i = 1; i < lixCount; i++)
 			{
 

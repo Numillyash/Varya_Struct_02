@@ -75,21 +75,22 @@ int parceField(char* line, int* _field_num, char** _string, int* _int, time_t** 
 		case 5:
 			*_field_num = field_num;
 			time_t result = 0;
-			int year = 0, month = 0, day = 0, hour = 0, min = 0;
-			if (sscanf(st2, "%4d.%2d.%2d!%2d:%2d", &year, &month, &day, &hour, &min) == 5) {
+			int year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
+			if (sscanf(st2, "%4d.%2d.%2d!%2d:%2d:%2d", &year, &month, &day, &hour, &min, &sec) == 6) {
 				struct tm breakdown = { 0 };
 				breakdown.tm_year = year - 1900; /* years since 1900 */
 				breakdown.tm_mon = month - 1;
 				breakdown.tm_mday = day;
-				breakdown.tm_hour = hour;
+				breakdown.tm_hour = hour+3;
 				breakdown.tm_min = min;
+				breakdown.tm_sec = sec;
 
 				if ((result = mktime(&breakdown)) == (time_t)-1) {
 					return -1;
 				}
 
-				puts(ctime(&result));
-
+				//puts(ctime(&result));
+				//printf("%s %d\n", formateTime(&result), result);
 				(*_time) = &result;
 				return 1;
 			}
@@ -167,7 +168,7 @@ void parceLine(char* input)
 	int ints[2] = { 0,0 };
 	int f_num = -1;
 	int _int = -1;
-	time_t* tim = NULL, * start = NULL, * end=NULL;
+	time_t* tim = NULL, start = 0, end=0;
 	int stroks[99];
 
 	if (lixCount != 0) {
@@ -205,10 +206,10 @@ void parceLine(char* input)
 						ints[1] = _int;
 						break;
 					case 4:
-						start = tim;
+						start = *tim;
 						break;
 					case 5:
-						end = tim;
+						end = *tim;
 						break;
 					case 6:
 						break;
@@ -225,7 +226,7 @@ void parceLine(char* input)
 					error(input); exit(100);
 				}
 			}
-			putElementToDB(family, name, ints[0], ints[1], start, end, stroks);
+			putElementToDB(family, name, ints[0], ints[1], &start, &end, stroks);
 			break;
 		case 5: //uniq
 			if (lixCount > 7) {

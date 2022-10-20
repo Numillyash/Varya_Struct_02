@@ -42,16 +42,15 @@ int main()
 	printf("\nselect:%d \n", selectFunc(selects, conditions));*/
 
 	printDataBase();
+	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=1, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:40:23, result=[]");
 
+	//parceLine("insert last_nm=Baranova, first_nm=Genya, curse_id=3, lab_id=6, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
 	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=2, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
-	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=1, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
 	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=1, lab_id=3, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
 	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=4, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
-	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=3, lab_id=6, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
-
-	parceLine("insert last_nm=Baranova, first_nm=Varvara, curse_id=3, lab_id=6, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
-	printDataBase();
+	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=3, lab_id=5, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
 	parceLine("insert last_nm=Ulanovsky, first_nm=Grisha, curse_id=3, lab_id=6, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+	printDataBase();
 	printDataBase();
 	parceLine("uniq first_nm");
 	printDataBase();

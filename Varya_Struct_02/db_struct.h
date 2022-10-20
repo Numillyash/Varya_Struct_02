@@ -38,9 +38,9 @@ typedef struct _dbElement
 	// ID лабораторной
 	int lab_id;
 	// Время начала тестирования
-	time_t* start_tm;
+	time_t start_tm;
 	// Время окончания тестирования
-	time_t* end_tm;
+	time_t end_tm;
 	// Множество: пройденные тесты (99)
 	int* result;
 	// Следующий элемент списка
@@ -260,13 +260,21 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 	if (newElement == NULL)
 		return ALLOC_FAILURE;
 	mallocCount++;
-	newElement->first_nm = firstName;
-	newElement->last_nm = lastName;
+
+	char* family = (char*)malloc(sizeof(char) * strlen(lastName));
+	strcpy(family, lastName);
+	mallocCount++;
+	char* name = (char*)malloc(sizeof(char) * strlen(firstName));
+	strcpy(name, firstName);
+	mallocCount++;
+
+	newElement->first_nm = name;
+	newElement->last_nm = family;
 	newElement->curse_id = course;
 	newElement->lab_id = labID;
 	newElement->result = results;
-	newElement->start_tm = startTime;
-	newElement->end_tm = endTime;
+	newElement->start_tm = *startTime;
+	newElement->end_tm = *endTime;
 	newElement->nextElement = NULL;
 
 	if (head != NULL)
@@ -312,8 +320,8 @@ void printElement(DataBaseElement* elem)
 {
 	printf("Element:\n\tName: %s %s\n\tCourse: %d, lab N%d\n\t",
 		elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
-	printf("%s\t", asctime(gmtime(elem->start_tm)));
-	printf("%s\tResults\n", asctime(gmtime(elem->end_tm)));
+	printf("%s\t", asctime(gmtime(&(elem->start_tm))));
+	printf("%s\tResults\n", asctime(gmtime(&(elem->end_tm))));
 	/*for (int i = 0; i < 99; i++)
 	{
 		printf("%d ", elem->result[i]);
@@ -354,6 +362,7 @@ int deleteNonUniqElements(char whatToDelete[7])
 									if (!whatToDelete[6] || isResultsSame(tmp, tmp2))
 									{
 										needToDel[currInd] = 1;
+										//printf("%d currind, %d, %d\n", currInd,tmp->lab_id, tmp2->lab_id);
 									}
 			// Добавить сравнение по тестам
 			tmp2 = tmp2->nextElement;

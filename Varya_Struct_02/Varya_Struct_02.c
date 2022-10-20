@@ -12,14 +12,36 @@ int main()
 	putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks, 3);
 	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks, 3);
 	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks, 3);
+	time_t now = time(NULL);
+	int stroks[99];
 
-	putElementToDB("Baranova", "Varvara", 2, 1, &now, &now, stroks, 2);
+	for (int i = 0; i < 99; i++)
+		stroks[i] = i % 3 == 1 ? 1 : 0;
 
-	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks, 4);
+	putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks);
+
+	putElementToDB("Baranova", "Varvara", 2, 1, &now, &now, stroks);
+	putElementToDB("Baranova", "Varvara", 2, 4, &now, &now, stroks);
+	putElementToDB("Baranova", "Varvara", 2, 3, &now, &now, stroks);
+
+	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks);
+
+	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks);
 
 	printDataBase();
 
-	deleteElementsWithParametres("Ulanovsky", NULL, NULL, 1, NULL, NULL, NULL, NULL);
+	printf("uniq:%d \n", deleteNonUniqElements());
+
+	char selects[7] = { 0, 5, 3, -1, -1, -1, -1 };
+
+	Condition a = { moreEqual, 2, 0, NULL, 0, NULL };
+	Condition* conditions[7] = {NULL, NULL, NULL, &a, NULL, NULL, NULL};
+	printf("\nselect:%d \n", selectFunc(selects, conditions));
+	printf("\nupdate:%d \n", updateFunc("TeStNaMe", NULL, -1, -1, NULL, NULL, NULL, conditions));
+	printf("\nselect:%d \n", selectFunc(selects, conditions));
 
 	printDataBase();*/
 	saveStats();

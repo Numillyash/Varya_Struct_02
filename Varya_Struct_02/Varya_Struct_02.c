@@ -5,18 +5,16 @@
 
 int main()
 {
-	char** words = NULL;
-	getWordsAndCount("insert       car_vendor=kia, car_model=light,  car_year=2009, car_id=M785FF, divise=cam  carrying=21, axles=10", words);
-	/*time_t now = time(NULL);
-	char *stroks[20] = { "Test 1", "Test 2", "Test 3", "Test 4"};
-	putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks, 3);
-	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks, 3);
-	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks, 3);
 	time_t now = time(NULL);
 	int stroks[99];
 
 	for (int i = 0; i < 99; i++)
 		stroks[i] = i % 3 == 1 ? 1 : 0;
+
+	/*putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks);
+	putElementToDB("Ulanovsky", "George", 3, 1, &now, &now, stroks);
+
 
 	putElementToDB("Ulanovsky", "George", 2, 4, &now, &now, stroks);
 	putElementToDB("Ulanovsky", "George", 2, 1, &now, &now, stroks);
@@ -31,18 +29,34 @@ int main()
 
 	putElementToDB("Fidarov", "German", 2, 2, &now, &now, stroks);
 
-	printDataBase();
+	printDataBase();*/
 
-	printf("uniq:%d \n", deleteNonUniqElements());
+	//printf("uniq:%d \n", deleteNonUniqElements());
 
 	char selects[7] = { 0, 5, 3, -1, -1, -1, -1 };
 
 	Condition a = { moreEqual, 2, 0, NULL, 0, NULL };
-	Condition* conditions[7] = {NULL, NULL, NULL, &a, NULL, NULL, NULL};
-	printf("\nselect:%d \n", selectFunc(selects, conditions));
+	Condition* conditions[7] = { NULL, NULL, NULL, &a, NULL, NULL, NULL };
+	/*printf("\nselect:%d \n", selectFunc(selects, conditions));
 	printf("\nupdate:%d \n", updateFunc("TeStNaMe", NULL, -1, -1, NULL, NULL, NULL, conditions));
-	printf("\nselect:%d \n", selectFunc(selects, conditions));
+	printf("\nselect:%d \n", selectFunc(selects, conditions));*/
 
-	printDataBase();*/
+	printDataBase();
+
+	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=2, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=1, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=1, lab_id=3, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=4, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+	parceLine("insert last_nm=Ulanovsky, first_nm=George, curse_id=3, lab_id=6, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+
+	parceLine("insert last_nm=Baranova, first_nm=Varvara, curse_id=3, lab_id=6, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+	printDataBase();
+	parceLine("insert last_nm=Ulanovsky, first_nm=Grisha, curse_id=3, lab_id=6, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]");
+	printDataBase();
+	parceLine("uniq first_nm");
+	printDataBase();
+	parceLine("exit");
+
+
 	saveStats();
 }

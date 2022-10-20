@@ -331,7 +331,7 @@ void printDataBase()
 	}
 }
 
-int deleteNonUniqElements()
+int deleteNonUniqElements(char whatToDelete[7])
 {
 	char* needToDel = (char*)malloc(sizeof(char) * dataBaseSize);
 	mallocCount++;
@@ -345,13 +345,13 @@ int deleteNonUniqElements()
 		tmp2 = tmp->nextElement;
 		while (tmp2 != NULL)
 		{
-			if (!strcmp(tmp->last_nm, tmp2->last_nm))
-				if (!strcmp(tmp->first_nm, tmp2->first_nm))
-					if (tmp->curse_id == tmp2->curse_id)
-						if (tmp->lab_id == tmp2->lab_id)
-							if (tmp->start_tm == tmp2->start_tm)
-								if (tmp->end_tm == tmp2->end_tm)
-									if (isResultsSame(tmp, tmp2))
+			if (!whatToDelete[0] || !strcmp(tmp->last_nm, tmp2->last_nm))
+				if (!whatToDelete[1] || !strcmp(tmp->first_nm, tmp2->first_nm))
+					if (!whatToDelete[2] || tmp->curse_id == tmp2->curse_id)
+						if (!whatToDelete[3] || tmp->lab_id == tmp2->lab_id)
+							if (!whatToDelete[4] || tmp->start_tm == tmp2->start_tm)
+								if (!whatToDelete[5] || tmp->end_tm == tmp2->end_tm)
+									if (!whatToDelete[6] || isResultsSame(tmp, tmp2))
 									{
 										needToDel[currInd] = 1;
 									}
@@ -392,6 +392,7 @@ int deleteNonUniqElements()
 		}
 
 	}
+	printf("uniq:%d \n", add);
 	return add;
 }
 

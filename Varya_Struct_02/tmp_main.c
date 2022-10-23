@@ -1,9 +1,9 @@
 #include "parcer.h"
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    FILE* IFile = NULL;
-    char* ILine = NULL;
+    FILE *IFile = NULL;
+    char *ILine = NULL;
     size_t len = 0;
     ssize_t read;
 
@@ -19,17 +19,18 @@ int main(int argc, char** argv)
                 exit(WRONG_ARGUMENT_FAILURE);
             }
         }
-        
+
         else
         {
             printf("Wrong Arguments!\nUsage ./Lab.exe -f <file.txt>\n");
             exit(WRONG_ARGUMENT_FAILURE);
         }
 
-        while ((read = getline(&ILine, &len, IFile)) != -1) {
-        // printf("Retrieved line of length %zu:\n", read);
-        printf("%s", ILine);
-        parceLine(ILine);
+        while ((read = getline(&ILine, &len, IFile)) != -1)
+        {
+            // printf("Retrieved line of length %zu:\n", read);
+            printf("%s", ILine);
+            parceLine(ILine);
         }
 
         fclose(IFile);

@@ -1,9 +1,9 @@
 #pragma once
 #include "db_struct.h"
 
-int workMode(char* y)
+int workMode(char *y)
 {
-	const char* com[6] = { "insert", "select", "delete", "update", "uniq", "exit" };
+	const char *com[6] = {"insert", "select", "delete", "update", "uniq", "exit"};
 	for (int i = 0; i < 6; i++)
 	{
 		if (strcmp(y, com[i]) == 0)
@@ -12,9 +12,7 @@ int workMode(char* y)
 	return -1;
 }
 
-
-
-int isField(char* str)
+int isField(char *str)
 {
 	// 0 -> 6 fields
 	if (!strcmp("last_nm", str))
@@ -34,15 +32,15 @@ int isField(char* str)
 	return -1;
 }
 
-// Возвращает номер поля, если оно содержится в ликсеме
-int isChangingField(char* line)
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+int isChangingField(char *line)
 {
-	char* eq = strchr(line, '=');
+	char *eq = strchr(line, '=');
 	if (eq != NULL && *(eq + 1) != '=')
 	{
-		char buf[500], ** array;
+		char buf[500], **array;
 		strcpy(buf, line);
-		char* pch = strtok(buf, "=");
+		char *pch = strtok(buf, "=");
 		int x = isField(pch);
 		return x;
 	}
@@ -50,14 +48,14 @@ int isChangingField(char* line)
 		return -1;
 }
 
-int parceField(char* line, int* _field_num, char** _string, int* _int, time_t** _time, int* results)
+int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **_time, int *results)
 {
 	int field_num = isChangingField(line);
 	int i;
 	if (field_num != -1)
 	{
-		char* st1 = strtok(line, "=");
-		char* st2 = strtok(NULL, "=");
+		char *st1 = strtok(line, "=");
+		char *st2 = strtok(NULL, "=");
 		switch (field_num)
 		{
 		case 0:
@@ -76,8 +74,9 @@ int parceField(char* line, int* _field_num, char** _string, int* _int, time_t** 
 			*_field_num = field_num;
 			time_t result = 0;
 			int year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
-			if (sscanf(st2, "%4d.%2d.%2d!%2d:%2d:%2d", &year, &month, &day, &hour, &min, &sec) == 6) {
-				struct tm breakdown = { 0 };
+			if (sscanf(st2, "%4d.%2d.%2d!%2d:%2d:%2d", &year, &month, &day, &hour, &min, &sec) == 6)
+			{
+				struct tm breakdown = {0};
 				breakdown.tm_year = year - 1900; /* years since 1900 */
 				breakdown.tm_mon = month - 1;
 				breakdown.tm_mday = day;
@@ -85,16 +84,18 @@ int parceField(char* line, int* _field_num, char** _string, int* _int, time_t** 
 				breakdown.tm_min = min;
 				breakdown.tm_sec = sec;
 
-				if ((result = mktime(&breakdown)) == (time_t)-1) {
+				if ((result = mktime(&breakdown)) == (time_t)-1)
+				{
 					return -1;
 				}
 
-				//puts(ctime(&result));
-				//printf("%s %d\n", formateTime(&result), result);
+				// puts(ctime(&result));
+				// printf("%s %d\n", formateTime(&result), result);
 				(*_time) = &result;
 				return 1;
 			}
-			else {
+			else
+			{
 				return -1;
 			}
 			return 1;
@@ -110,27 +111,27 @@ int parceField(char* line, int* _field_num, char** _string, int* _int, time_t** 
 		return -1;
 }
 
-int parceCondition(char* line, Condition* conditions[7])
+int parceCondition(char *line, Condition *conditions[7])
 {
 	int x = !strncmp(line, "result", 6);
 	if (x)
 	{
-		// обработка ресультов
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	}
 	else
 	{
 		char buf[50], buf2[50];
 		strcpy(buf, line);
-		char* st1 = strtok(buf, "<>!=");
-		char* st2 = strtok(NULL, "<>!=");
+		char *st1 = strtok(buf, "<>!=");
+		char *st2 = strtok(NULL, "<>!=");
 		strcpy(buf2, line);
-		char* usl = strtok(buf2, "qwertyuiop[]asdfghjkl;'zxcvbnm,./1234567890-+_");
-		Condition* a = (Condition*)malloc(sizeof(Condition));
+		char *usl = strtok(buf2, "qwertyuiop[]asdfghjkl;'zxcvbnm,./1234567890-+_");
+		Condition *a = (Condition *)malloc(sizeof(Condition));
 		x = isField(st1);
 		if (x == -1)
 			return -1;
 		conditions[x] = a;
-		int st1Len = strlen(st1), i= 0;
+		int st1Len = strlen(st1), i = 0;
 		switch (x)
 		{
 		case 0:
@@ -157,12 +158,12 @@ int parceCondition(char* line, Condition* conditions[7])
 				return -1;
 			return 1;
 		case 4:
-		case 5:
-			;
+		case 5:;
 			time_t result = 0;
 			int year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
-			if (sscanf(st2, "%4d.%2d.%2d!%2d:%2d:%2d", &year, &month, &day, &hour, &min, &sec) == 6) {
-				struct tm breakdown = { 0 };
+			if (sscanf(st2, "%4d.%2d.%2d!%2d:%2d:%2d", &year, &month, &day, &hour, &min, &sec) == 6)
+			{
+				struct tm breakdown = {0};
 				breakdown.tm_year = year - 1900; /* years since 1900 */
 				breakdown.tm_mon = month - 1;
 				breakdown.tm_mday = day;
@@ -170,16 +171,18 @@ int parceCondition(char* line, Condition* conditions[7])
 				breakdown.tm_min = min;
 				breakdown.tm_sec = sec;
 
-				if ((result = mktime(&breakdown)) == (time_t)-1) {
+				if ((result = mktime(&breakdown)) == (time_t)-1)
+				{
 					return -1;
 				}
 
-				//puts(ctime(&result));
-				//printf("%s %d\n", formateTime(&result), result);
+				// puts(ctime(&result));
+				// printf("%s %d\n", formateTime(&result), result);
 				a->compTime = result;
 				return 1;
 			}
-			else {
+			else
+			{
 				return -1;
 			}
 			return 1;
@@ -189,34 +192,35 @@ int parceCondition(char* line, Condition* conditions[7])
 	}
 }
 
-int getWordsAndCount(char* line, char*** arr)
+int getWordsAndCount(char *line, char ***arr)
 {
-	char buf[500], ** array;
+	char buf[500], **array;
 	strcpy(buf, line);
-	char* pch = strtok(buf, " ,");
+	char *pch = strtok(buf, " ,");
 	int count = 0;
 
-	while (pch != NULL)                         // пока есть лексемы
+	while (pch != NULL) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
 		pch = strtok(NULL, " ,");
 		count++;
 	}
 
-	if (count == 0)return 0;
+	if (count == 0)
+		return 0;
 
-	array = (char**)malloc(sizeof(char*) * count);
+	array = (char **)malloc(sizeof(char *) * count);
 	mallocCount++;
 
 	strcpy(buf, line);
 	pch = strtok(buf, " ,");
 	count = 0;
 
-	while (pch != NULL)                         // пока есть лексемы
+	while (pch != NULL) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
-		array[count] = (char*)malloc(sizeof(char) * 50);
+		array[count] = (char *)malloc(sizeof(char) * 50);
 		mallocCount++;
 		strcpy(array[count], pch);
-		pch = strtok(NULL, " ,");
+		pch = strtok(NULL, " ,\n");
 		count++;
 	}
 
@@ -228,35 +232,38 @@ int getWordsAndCount(char* line, char*** arr)
 	return count;
 }
 
-void error(char* input)
+void error(char *input)
 {
-	char buf[21];
+	char buf[21] = "";
 	strncpy(buf, input, 20);
 
-	printf("\nnot correct");
+	printf("\nnot correct\n");
 	printf("%s\n", buf);
 }
 
-void parceLine(char* input)
+void parceLine(char *input)
 {
-	char** wrd = NULL;
+	char **wrd = NULL;
 
 	int lixCount = getWordsAndCount(input, &wrd);
-	char whatToSearch[7] = { 0,0,0,0,0,0,0 };
-	char family[50], name[50], * str = NULL;
-	int ints[2] = { 0,0 };
+	char whatToSearch[7] = {0, 0, 0, 0, 0, 0, 0};
+	char family[50], name[50], *str = NULL;
+	int ints[2] = {0, 0};
 	int f_num = -1;
 	int _int = -1;
-	time_t* tim = NULL, start = 0, end = 0;
+	time_t *tim = NULL, start = 0, end = 0;
 	int stroks[99];
 
-	if (lixCount != 0) {
+	if (lixCount != 0)
+	{
 		int x = workMode(wrd[0]);
 		switch (x)
 		{
-		case 1: //insert
-			if (lixCount != 8) {
-				error(input); exit(100);
+		case 1: // insert
+			if (lixCount != 8)
+			{
+				error(input);
+				exit(100);
 			}
 
 			for (int i = 1; i < lixCount; i++)
@@ -265,7 +272,8 @@ void parceLine(char* input)
 				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
 				if (x == -1)
 				{
-					error(input); exit(100);
+					error(input);
+					exit(100);
 				}
 				else
 				{
@@ -293,7 +301,8 @@ void parceLine(char* input)
 					case 6:
 						break;
 					default:
-						error(input); exit(100);
+						error(input);
+						exit(100);
 						break;
 					}
 				}
@@ -302,21 +311,25 @@ void parceLine(char* input)
 			{
 				if (whatToSearch[i] >= 2)
 				{
-					error(input); exit(100);
+					error(input);
+					exit(100);
 				}
 			}
 			putElementToDB(family, name, ints[0], ints[1], &start, &end, stroks);
 			break;
-		case 5: //uniq
-			if (lixCount > 7) {
-				error(input); exit(100);
+		case 5: // uniq
+			if (lixCount > 7)
+			{
+				error(input);
+				exit(100);
 			}
 			for (int i = 1; i < lixCount; i++)
 			{
 				x = isField(wrd[i]);
 				if (x == -1)
 				{
-					error(input); exit(100);
+					error(input);
+					exit(100);
 				}
 				else
 				{
@@ -327,7 +340,8 @@ void parceLine(char* input)
 			{
 				if (whatToSearch[i] >= 2)
 				{
-					error(input); exit(100);
+					error(input);
+					exit(100);
 				}
 			}
 			deleteNonUniqElements(whatToSearch);

@@ -1,6 +1,4 @@
 insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=2, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]
 insert last_nm=Ulanovsky, first_nm=George, curse_id=1, lab_id=3, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]
 insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=4, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]
-
 uniq first_nm
-

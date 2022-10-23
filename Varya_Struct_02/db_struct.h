@@ -496,7 +496,7 @@ int selectFunc(char whatToPrint[7], Condition* conditions[7])
 	return count;
 }
 
-int updateFunc(char* lastName, char* firstName, int course, int labID, time_t startTime, time_t endTime, int results[99],Condition* conditions[7])
+int updateFunc(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, int results[99],Condition* conditions[7])
 {
 	int count = 0;
 	DataBaseElement* tmp;
@@ -514,9 +514,9 @@ int updateFunc(char* lastName, char* firstName, int course, int labID, time_t st
 			if (labID != -1)
 				tmp->lab_id = labID;
 			if (startTime != NULL)
-				tmp->start_tm = startTime;
+				tmp->start_tm = *startTime;
 			if (endTime != NULL)
-				tmp->end_tm = endTime;
+				tmp->end_tm = *endTime;
 			if (results != NULL)
 				tmp->result = results;
 			count++;

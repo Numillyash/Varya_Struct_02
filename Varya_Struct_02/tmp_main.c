@@ -4,8 +4,8 @@ int main(int argc, char **argv)
 {
     FILE *IFile = NULL;
     char *ILine = NULL;
-    size_t len = 0;
-    ssize_t read;
+    int16_t len = 0;
+    int32_t read;
 
     if (argc > 1)
     {

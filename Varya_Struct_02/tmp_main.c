@@ -32,6 +32,7 @@ int main(int argc, char **argv)
             printf("%s", ILine);
             parceLine(ILine);
         }
+        printDataBase();
 
         fclose(IFile);
         if (ILine)

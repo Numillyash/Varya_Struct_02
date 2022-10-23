@@ -230,7 +230,7 @@ int getWordsAndCount(char* line, char*** arr)
 
 void error(char* input)
 {
-	char* buf[21];
+	char buf[21];
 	strncpy(buf, input, 20);
 
 	printf("\nnot correct");

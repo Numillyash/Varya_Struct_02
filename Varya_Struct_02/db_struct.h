@@ -103,7 +103,7 @@ int isResultsNotIncludeBoth(DataBaseElement* elem, Condition* condition)
 int isStringOneOf(char* string, Condition* condition)
 {
 	for (int i = 0; i < condition->compStringCount; i++)
-		if (!strcmp(string, condition->compString))
+		if (!strcmp(string, condition->compString[i]))
 			return 1;
 	return 0;
 }
@@ -405,7 +405,7 @@ int deleteNonUniqElements(char whatToDelete[7])
 	return add;
 }
 
-int deleteFunc(Condition* conditions)
+int deleteFunc(Condition** conditions)
 {
 	int count = 0;
 	DataBaseElement* tmp;
@@ -496,7 +496,7 @@ int selectFunc(char whatToPrint[7], Condition* conditions[7])
 	return count;
 }
 
-int updateFunc(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, int results[99],Condition* conditions[7])
+int updateFunc(char* lastName, char* firstName, int course, int labID, time_t startTime, time_t endTime, int results[99],Condition* conditions[7])
 {
 	int count = 0;
 	DataBaseElement* tmp;

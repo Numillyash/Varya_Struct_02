@@ -55,7 +55,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 	if (field_num != -1)
 	{
 		char *st1 = strtok(line, "=");
-		char *st2 = strtok(NULL, "=");
+		char *st2 = strtok(NULL, "="); 
 		switch (field_num)
 		{
 		case 0:
@@ -99,9 +99,49 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 				return -1;
 			}
 			return 1;
+		
 		case 6:
+		;
+			for (int i = 0; i < 100; i++)
+			{
+				results[i] = 0;
+			}
+			
+			char* tmp_buf = st2;
+			char* token_buf = strtok(tmp_buf, "[];");
+
+			int iteration = 1;
+			while(token_buf != NULL)
+			{
+				printf("token: %s\n\n", token_buf);
+				
+				// check token reliability
+				if (strlen(token_buf) != 6 || strncmp("test", token_buf, 4))
+				{
+					return -1;
+				}
+				if(!(token_buf[4]<='9' && token_buf[4]>='0' && token_buf[5]<='9' && token_buf[5]>='0'))
+				{
+					return -1;
+				}
+
+				int index = (token_buf[5] - '0') + (token_buf[4] - '0') * 10;
+				results[index]++;
+
+				token_buf = strtok(NULL, "[];");
+				iteration++;
+			}
+		
 			*_field_num = field_num;
-			results[0] = 0;
+			for (int i = 0; i < 100; i++)
+			{
+				if (results[i] > 1)
+				{
+					return -1;
+				}
+			}
+			
+			return 1;
 			break;
 		default:
 			break;
@@ -116,7 +156,7 @@ int parceCondition(char *line, Condition *conditions[7])
 	int x = !strncmp(line, "result", 6);
 	if (x)
 	{
-		// ��������� ���������
+		// char* buf = strtok(line, "");
 	}
 	else
 	{

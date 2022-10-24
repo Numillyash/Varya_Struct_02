@@ -27,7 +27,7 @@ int main(int argc, char **argv)
             printf("Wrong Arguments!\nUsage ./Lab.exe -f <file.txt>\n");
             exit(WRONG_ARGUMENT_FAILURE);
         }
-        
+
         while ((read = fgets(&ILine, MAX_STRING_SIZE, IFile)) != NULL)
         {
             printf("%s", ILine);
@@ -38,15 +38,15 @@ int main(int argc, char **argv)
         fclose(IFile);
 
         exit(EXIT_SUCCESS); // Comment if you want continious reading after parsing file
-    } // if (argc > 1) -- correct
+    }                       // if (argc > 1) -- correct
 
     int iExit = 0;
     printf("Enter your request.\nType \"stop\" to stop reading\n\n");
-    while(!iExit)
+    while (!iExit)
     {
         printf("> ");
         gets(WRead);
-        // Тут уже есть в парслайне обработка на exit, эту нужно убрать
+        // пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ exit, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         if (!strcmp("stop", WRead))
         {
             break;

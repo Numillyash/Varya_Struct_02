@@ -56,7 +56,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 	if (field_num != -1)
 	{
 		char *st1 = strtok(line, "=");
-		char *st2 = strtok(NULL, "="); 
+		char *st2 = strtok(NULL, "=");
 		switch (field_num)
 		{
 		case 0:
@@ -100,22 +100,21 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 				return -1;
 			}
 			return 1;
-		
-		case 6:
-		;
-			
-			char* tmp_buf = st2;
-			char* token_buf = strtok(tmp_buf, "[];");
+
+		case 6:;
+
+			char *tmp_buf = st2;
+			char *token_buf = strtok(tmp_buf, "[];");
 
 			int iteration = 1;
-			while(token_buf != NULL)
-			{				
+			while (token_buf != NULL)
+			{
 				// check token reliability
 				if (strlen(token_buf) != 6 || strncmp("test", token_buf, 4))
 				{
 					return -1;
 				}
-				if(!(token_buf[4]<='9' && token_buf[4]>='0' && token_buf[5]<='9' && token_buf[5]>='0'))
+				if (!(token_buf[4] <= '9' && token_buf[4] >= '0' && token_buf[5] <= '9' && token_buf[5] >= '0'))
 				{
 					return -1;
 				}
@@ -126,7 +125,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 				token_buf = strtok(NULL, "[];");
 				iteration++;
 			}
-		
+
 			*_field_num = field_num;
 			for (int i = 0; i < 100; i++)
 			{
@@ -160,19 +159,28 @@ int parceCondition(char *line, Condition *conditions[7])
 		char *st1 = strtok(buf, "<>!=");
 		char *st2 = strtok(NULL, "<>!=");
 		strcpy(buf2, line);
-		char *usl = strtok(buf2, "qwertyuiop[]asdfghjkl;'zxcvbnm,./1234567890-+_");
+		char *usl = strtok(buf2, "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiop[]asdfghjkl;'zxcvbnm,./1234567890-+_");
 		Condition *a = (Condition *)malloc(sizeof(Condition));
 		x = isField(st1);
 		if (x == -1)
 			return -1;
 		conditions[x] = a;
 		int st1Len = strlen(st1), i = 0;
-		printf("CParcer Case: %d\n", x);
 		switch (x)
 		{
 		case 0:
 		case 1:
 			//
+			a->compString = (char **)malloc(sizeof(char *));
+			mallocCount++;
+			a->compStringCount = 1;
+			char *strDop = (char *)malloc(sizeof(char) * 50);
+			strcpy(strDop, st2);
+			a->compString[0] = strDop;
+			if (!strcmp("==", usl))
+				a->condition = stringIsOneOf;
+			else if (!strcmp("!=", usl))
+				a->condition = stringIsNotOneOf;
 			return 1;
 		case 2:
 		case 3:
@@ -289,12 +297,12 @@ void parceLine(char *input)
 	int f_num = -1;
 	int _int = -1;
 	time_t *tim = NULL, start = 0, end = 0;
-	int* stroks = (int*)malloc(100*sizeof(int));
+	int *stroks = (int *)malloc(100 * sizeof(int));
 	mallocCount++;
 
 	printf("GOT THERE\n");
 
-	if (lixCount != 0)
+	if (lixCount != 0 && strlen(input) != 0)
 	{
 		int x = workMode(wrd[0]);
 		printf("WM: %d\n", x);
@@ -363,17 +371,17 @@ void parceLine(char *input)
 			}
 			putElementToDB(family, name, ints[0], ints[1], &start, &end, stroks);
 			break;
-		case 3: //TODO: DELETE
+		case 3: // TODO: DELETE
 			;
-			Condition* conditions[7] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+			Condition *conditions[7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 			printf("DELEETE!\n");
-			
+
 			for (int i = 1; i < lixCount; i++)
 			{
 				int res = parceCondition(wrd[i], conditions);
 				printf("Condition %d: %d\n", i, res);
 			}
-			
+
 			printf("Parsed All Conditions!\n");
 			deleteFunc(conditions);
 			break;

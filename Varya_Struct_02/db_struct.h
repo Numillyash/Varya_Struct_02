@@ -14,7 +14,8 @@ enum cond
 	resultsNotIncludeBoth,
 	resultsIncludeBoth,
 	resultsIncludeAtLeastOne,
-	stringIsOneOf
+	stringIsOneOf,
+	stringIsNotOneOf
 };
 
 typedef struct _condition
@@ -22,17 +23,17 @@ typedef struct _condition
 	enum cond condition;
 	int compInt;
 	time_t compTime;
-	char** compString;
+	char **compString;
 	int compStringCount;
-	int* compResults;
-}Condition;
+	int *compResults;
+} Condition;
 
 typedef struct _dbElement
 {
 	// �������
-	char* last_nm;
+	char *last_nm;
 	// ���
-	char* first_nm;
+	char *first_nm;
 	// ����
 	int curse_id;
 	// ID ������������
@@ -42,15 +43,15 @@ typedef struct _dbElement
 	// ����� ��������� ������������
 	time_t end_tm;
 	// ���������: ���������� ����� (99)
-	int* result;
+	int *result;
 	// ��������� ������� ������
-	struct _dbElement* nextElement;
-}DataBaseElement;
+	struct _dbElement *nextElement;
+} DataBaseElement;
 
-DataBaseElement* head;
+DataBaseElement *head;
 uint64_t dataBaseSize = 0;
 
-int isResultsSame(DataBaseElement* e1, DataBaseElement* e2)
+int isResultsSame(DataBaseElement *e1, DataBaseElement *e2)
 {
 	for (int i = 0; i < 99; i++)
 	{
@@ -60,7 +61,7 @@ int isResultsSame(DataBaseElement* e1, DataBaseElement* e2)
 	return 1;
 }
 
-int isResultsOneOnly(DataBaseElement* elem, Condition* condition)
+int isResultsOneOnly(DataBaseElement *elem, Condition *condition)
 {
 	for (int i = 0; i < 99; i++)
 	{
@@ -70,7 +71,7 @@ int isResultsOneOnly(DataBaseElement* elem, Condition* condition)
 	return 1;
 }
 
-int isResultsIncludeBoth(DataBaseElement* elem, Condition* condition)
+int isResultsIncludeBoth(DataBaseElement *elem, Condition *condition)
 {
 	for (int i = 0; i < 99; i++)
 	{
@@ -80,7 +81,7 @@ int isResultsIncludeBoth(DataBaseElement* elem, Condition* condition)
 	return 1;
 }
 
-int isResultsIncludeAtLeastOne(DataBaseElement* elem, Condition* condition)
+int isResultsIncludeAtLeastOne(DataBaseElement *elem, Condition *condition)
 {
 	for (int i = 0; i < 99; i++)
 	{
@@ -90,7 +91,7 @@ int isResultsIncludeAtLeastOne(DataBaseElement* elem, Condition* condition)
 	return 0;
 }
 
-int isResultsNotIncludeBoth(DataBaseElement* elem, Condition* condition)
+int isResultsNotIncludeBoth(DataBaseElement *elem, Condition *condition)
 {
 	for (int i = 0; i < 99; i++)
 	{
@@ -100,7 +101,7 @@ int isResultsNotIncludeBoth(DataBaseElement* elem, Condition* condition)
 	return 1;
 }
 
-int isStringOneOf(char* string, Condition* condition)
+int isStringOneOf(char *string, Condition *condition)
 {
 	for (int i = 0; i < condition->compStringCount; i++)
 		if (!strcmp(string, condition->compString[i]))
@@ -108,20 +109,30 @@ int isStringOneOf(char* string, Condition* condition)
 	return 0;
 }
 
-int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
+int isElementRespondConditions(DataBaseElement *elem, Condition *conditions[7])
 {
 	// �������� �� �������
 	if (conditions[0] != NULL)
 	{
 		if (conditions[0]->condition == stringIsOneOf)
 			if (!isStringOneOf(elem->last_nm, conditions[0]))
+			{
 				return 0;
+			}
+		if (conditions[0]->condition == stringIsNotOneOf)
+			if (isStringOneOf(elem->last_nm, conditions[0]))
+			{
+				return 0;
+			}
 	}
 	// �������� �� ���
 	if (conditions[1] != NULL)
 	{
-		if (conditions[0]->condition == stringIsOneOf)
-			if (!isStringOneOf(elem->first_nm, conditions[0]))
+		if (conditions[1]->condition == stringIsOneOf)
+			if (!isStringOneOf(elem->first_nm, conditions[1]))
+				return 0;
+		if (conditions[1]->condition == stringIsNotOneOf)
+			if (!isStringOneOf(elem->first_nm, conditions[1]))
 				return 0;
 	}
 	// �������� �� ����
@@ -131,22 +142,28 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->curse_id <= conditions[2]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case moreEqual:
 			if (elem->curse_id < conditions[2]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case less:
 			if (elem->curse_id >= conditions[2]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case lessEqual:
 			if (elem->curse_id > conditions[2]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case equal:
 			if (elem->curse_id != conditions[2]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case notEqual:
 			if (elem->curse_id == conditions[2]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		default:
 			break;
 		}
@@ -158,22 +175,28 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->lab_id <= conditions[3]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case moreEqual:
 			if (elem->lab_id < conditions[3]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case less:
 			if (elem->lab_id >= conditions[3]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case lessEqual:
 			if (elem->lab_id > conditions[3]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case equal:
 			if (elem->lab_id != conditions[3]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		case notEqual:
 			if (elem->lab_id == conditions[3]->compInt)
-				return 0; break;
+				return 0;
+			break;
 		default:
 			break;
 		}
@@ -185,22 +208,28 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->start_tm <= conditions[4]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case moreEqual:
 			if (elem->start_tm < conditions[4]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case less:
 			if (elem->start_tm >= conditions[4]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case lessEqual:
 			if (elem->start_tm > conditions[4]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case equal:
 			if (elem->start_tm != conditions[4]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case notEqual:
 			if (elem->start_tm == conditions[4]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		default:
 			break;
 		}
@@ -212,22 +241,28 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case more:
 			if (elem->end_tm <= conditions[5]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case moreEqual:
 			if (elem->end_tm < conditions[5]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case less:
 			if (elem->end_tm >= conditions[5]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case lessEqual:
 			if (elem->end_tm > conditions[5]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case equal:
 			if (elem->end_tm != conditions[5]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		case notEqual:
 			if (elem->end_tm == conditions[5]->compTime)
-				return 0; break;
+				return 0;
+			break;
 		default:
 			break;
 		}
@@ -239,33 +274,36 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 		{
 		case resultsAreOnly:
 			if (!isResultsOneOnly(elem, conditions[6]))
-				return 0; break;
+				return 0;
+			break;
 		case resultsNotIncludeBoth:
 			if (!isResultsNotIncludeBoth(elem, conditions[6]))
-				return 0; break;
+				return 0;
+			break;
 		case resultsIncludeBoth:
 			if (!isResultsIncludeBoth(elem, conditions[6]))
-				return 0; break;
+				return 0;
+			break;
 		case resultsIncludeAtLeastOne:
 			if (!isResultsIncludeAtLeastOne(elem, conditions[6]))
-				return 0; break;
+				return 0;
+			break;
 		}
 	}
 	return 1;
 }
 
-int putElementToDB(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, int* results)
+int putElementToDB(char *lastName, char *firstName, int course, int labID, time_t *startTime, time_t *endTime, int *results)
 {
-	DataBaseElement* newElement = (DataBaseElement*)malloc(sizeof(DataBaseElement));
+	DataBaseElement *newElement = (DataBaseElement *)malloc(sizeof(DataBaseElement));
 	if (newElement == NULL)
 		return ALLOC_FAILURE;
 	mallocCount++;
 
-
-	char* family = (char*)malloc(sizeof(char) * strlen(lastName));
+	char *family = (char *)malloc(sizeof(char) * strlen(lastName));
 	strcpy(family, lastName);
 	mallocCount++;
-	char* name = (char*)malloc(sizeof(char) * strlen(firstName));
+	char *name = (char *)malloc(sizeof(char) * strlen(firstName));
 	strcpy(name, firstName);
 	mallocCount++;
 
@@ -284,7 +322,7 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 
 	if (head != NULL)
 	{
-		DataBaseElement* tmp = head;
+		DataBaseElement *tmp = head;
 		while (tmp->nextElement != NULL)
 		{
 			tmp = tmp->nextElement;
@@ -300,31 +338,31 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 	return SUCCESS;
 }
 
-void deleteElementFromDB(DataBaseElement* elem)
+void deleteElementFromDB(DataBaseElement *elem)
 {
 	if (elem == head)
 	{
-		DataBaseElement* tmp = head;
+		DataBaseElement *tmp = head;
 		head = head->nextElement;
 		free(tmp);
 		freeCount++;
 	}
 	else
 	{
-		DataBaseElement* tmp = head;
+		DataBaseElement *tmp = head;
 		while (tmp != NULL && tmp->nextElement != elem)
 			tmp = tmp->nextElement;
-		DataBaseElement* tmp2 = tmp->nextElement;
+		DataBaseElement *tmp2 = tmp->nextElement;
 		tmp->nextElement = tmp2->nextElement;
 		free(tmp2);
 		freeCount++;
 	}
 }
 
-void printElement(DataBaseElement* elem)
+void printElement(DataBaseElement *elem)
 {
 	printf("Element:\n\tfirst_nm=%s\n\tlast_nm=%s\n\tcurse_id=%d\n\tlab_id=%d\n\t",
-		elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
+		   elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
 	printf("start_tm=%s\t", asctime(gmtime(&(elem->start_tm))));
 	printf("end_tm%s\t", asctime(gmtime(&(elem->end_tm))));
 	printf("result=[ ");
@@ -337,14 +375,13 @@ void printElement(DataBaseElement* elem)
 			else
 				printf("test0%d, ", j + 1);
 		}
-		
 	}
 	printf("]\n");
 }
 
 void printDataBase()
 {
-	DataBaseElement* tmp = head;
+	DataBaseElement *tmp = head;
 	while (tmp != NULL)
 	{
 		printElement(tmp);
@@ -354,12 +391,12 @@ void printDataBase()
 
 int deleteNonUniqElements(char whatToDelete[7])
 {
-	char* needToDel = (char*)malloc(sizeof(char) * dataBaseSize);
+	char *needToDel = (char *)malloc(sizeof(char) * dataBaseSize);
 	mallocCount++;
 
 	// ���� ��������
-	DataBaseElement* tmp = head;
-	DataBaseElement* tmp2 = head;
+	DataBaseElement *tmp = head;
+	DataBaseElement *tmp2 = head;
 	int currInd = 0;
 	while (tmp != NULL)
 	{
@@ -375,7 +412,7 @@ int deleteNonUniqElements(char whatToDelete[7])
 									if (!whatToDelete[6] || isResultsSame(tmp, tmp2))
 									{
 										needToDel[currInd] = 1;
-										//printf("%d currind, %d, %d\n", currInd,tmp->lab_id, tmp2->lab_id);
+										// printf("%d currind, %d, %d\n", currInd,tmp->lab_id, tmp2->lab_id);
 									}
 			// �������� ��������� �� ������
 			tmp2 = tmp2->nextElement;
@@ -384,10 +421,10 @@ int deleteNonUniqElements(char whatToDelete[7])
 		currInd++;
 	}
 
-	//for (uint64_t i = 0; i < dataBaseSize; i++)
+	// for (uint64_t i = 0; i < dataBaseSize; i++)
 	//		printf("%d ", needToDel[i]);
 
-	//for (uint64_t i = 0; i < dataBaseSize; i++)
+	// for (uint64_t i = 0; i < dataBaseSize; i++)
 	//	if(needToDel[i] == 1)
 	//		printf("\nDB elemeny number %d is need to delete", i+1);
 
@@ -412,16 +449,15 @@ int deleteNonUniqElements(char whatToDelete[7])
 			tmp = tmp->nextElement;
 			currInd++;
 		}
-
 	}
 	printf("uniq:%d \n", add);
 	return add;
 }
 
-int deleteFunc(Condition** conditions)
+int deleteFunc(Condition **conditions)
 {
 	int count = 0;
-	DataBaseElement* tmp;
+	DataBaseElement *tmp;
 restartCycle:
 	tmp = head;
 	while (tmp != NULL)
@@ -437,25 +473,25 @@ restartCycle:
 	return count;
 }
 
-char* formateTime(time_t time)
+char *formateTime(time_t time)
 {
-	char* string = asctime(gmtime(&time));
-	char* symb = strchr(string, '\n');
+	char *string = asctime(gmtime(&time));
+	char *symb = strchr(string, '\n');
 	*symb = '\0';
 	return string;
 }
 
 /// <summary>
-/// 
+///
 /// </summary>
 /// <param name="whatToPrint">����������� ������ ��� ������� ��������� ��������
 /// ,-1 ��� ������ ���� (�� NULL)
 /// </param>
 /// <param name="conditions"></param>
-int selectFunc(char whatToPrint[7], Condition* conditions[7])
+int selectFunc(char whatToPrint[7], Condition *conditions[7])
 {
 	int count = 0;
-	DataBaseElement* tmp;
+	DataBaseElement *tmp;
 	tmp = head;
 	while (tmp != NULL)
 	{
@@ -463,7 +499,8 @@ int selectFunc(char whatToPrint[7], Condition* conditions[7])
 		{
 			for (int i = 0; i < 7; i++)
 			{
-				switch (whatToPrint[i]) {
+				switch (whatToPrint[i])
+				{
 				case 0:
 					printf("last_nm:%s ", tmp->last_nm);
 					break;
@@ -488,12 +525,12 @@ int selectFunc(char whatToPrint[7], Condition* conditions[7])
 					{
 						if (tmp->result[j] == 1)
 						{
-							if(j > 9)
-								printf("test%d, ", j+1);
+							if (j > 9)
+								printf("test%d, ", j + 1);
 							else
 								printf("test0%d, ", j + 1);
 						}
-					}			
+					}
 					printf("]");
 					break;
 				case -1:
@@ -509,10 +546,10 @@ int selectFunc(char whatToPrint[7], Condition* conditions[7])
 	return count;
 }
 
-int updateFunc(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, int results[99],Condition* conditions[7])
+int updateFunc(char *lastName, char *firstName, int course, int labID, time_t *startTime, time_t *endTime, int results[99], Condition *conditions[7])
 {
 	int count = 0;
-	DataBaseElement* tmp;
+	DataBaseElement *tmp;
 	tmp = head;
 	while (tmp != NULL)
 	{

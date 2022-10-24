@@ -108,9 +108,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 
 			int iteration = 1;
 			while(token_buf != NULL)
-			{
-				printf("token: %s\n", token_buf);
-				
+			{				
 				// check token reliability
 				if (strlen(token_buf) != 6 || strncmp("test", token_buf, 4))
 				{
@@ -122,7 +120,6 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 				}
 
 				int index = (token_buf[5] - '0') + (token_buf[4] - '0') * 10;
-				printf("INDEX: %d, %s\n", index, token_buf);
 				results[index]++;
 
 				token_buf = strtok(NULL, "[];");

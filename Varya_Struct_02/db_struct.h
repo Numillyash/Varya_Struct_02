@@ -278,12 +278,6 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 	// newElement->result = *results; <--- it was like that
 	// so you're writing first element value to newElement->result <--- which is incrorrect
 
-	for (size_t i = 0; i < 100; i++)
-	{
-		printf("%d", newElement->result[i]);
-	}
-	printf("\n");
-
 	newElement->start_tm = *startTime;
 	newElement->end_tm = *endTime;
 	newElement->nextElement = NULL;

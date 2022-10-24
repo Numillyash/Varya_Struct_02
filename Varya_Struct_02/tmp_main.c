@@ -7,6 +7,8 @@ int main(int argc, char **argv)
     int16_t len = 0;
     int32_t read;
 
+    char WRead[300];
+
     if (argc > 1)
     {
         if (argc == 3)
@@ -37,6 +39,24 @@ int main(int argc, char **argv)
         fclose(IFile);
         if (ILine)
             free(ILine);
-        exit(EXIT_SUCCESS);
+
+        exit(EXIT_SUCCESS); // Comment if you want continious reading after parsing file
     } // if (argc > 1) -- correct
+
+    int iExit = 0;
+    printf("Enter your request.\nType \"stop\" to stop reading\n\n");
+    while(!iExit)
+    {
+        printf("> ");
+        gets(WRead);
+        if (!strcmp("stop", WRead))
+        {
+            break;
+        }
+
+        parceLine(WRead);
+    }
+
+    printDataBase();
+    exit(EXIT_SUCCESS);
 }

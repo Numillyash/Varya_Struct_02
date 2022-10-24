@@ -3,11 +3,11 @@
 int main(int argc, char **argv)
 {
     FILE *IFile = NULL;
-    char *ILine = NULL;
+    char ILine[MAX_STRING_SIZE + 1];
     int16_t len = 0;
     int32_t read;
 
-    char WRead[300];
+    char WRead[MAX_STRING_SIZE];
 
     if (argc > 1)
     {
@@ -27,18 +27,15 @@ int main(int argc, char **argv)
             printf("Wrong Arguments!\nUsage ./Lab.exe -f <file.txt>\n");
             exit(WRONG_ARGUMENT_FAILURE);
         }
-
-        while ((read = getline(&ILine, &len, IFile)) != -1)
+        
+        while ((read = fgets(&ILine, MAX_STRING_SIZE, IFile)) != NULL)
         {
-            // printf("Retrieved line of length %zu:\n", read);
             printf("%s", ILine);
             parceLine(ILine);
         }
         printDataBase();
 
         fclose(IFile);
-        if (ILine)
-            free(ILine);
 
         exit(EXIT_SUCCESS); // Comment if you want continious reading after parsing file
     } // if (argc > 1) -- correct

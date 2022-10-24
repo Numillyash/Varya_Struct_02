@@ -22,6 +22,7 @@
 #define FALSE 0
 
 // file
+#define MAX_STRING_SIZE 1000
 #define FILE_OPENING_ERROR "Cannot open the %s file.\n"
 
 /// <summary>

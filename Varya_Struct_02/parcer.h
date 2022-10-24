@@ -102,10 +102,6 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 		
 		case 6:
 		;
-			for (int i = 0; i < 100; i++)
-			{
-				results[i] = 0;
-			}
 			
 			char* tmp_buf = st2;
 			char* token_buf = strtok(tmp_buf, "[];");
@@ -113,7 +109,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 			int iteration = 1;
 			while(token_buf != NULL)
 			{
-				printf("token: %s\n\n", token_buf);
+				printf("token: %s\n", token_buf);
 				
 				// check token reliability
 				if (strlen(token_buf) != 6 || strncmp("test", token_buf, 4))
@@ -126,6 +122,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 				}
 
 				int index = (token_buf[5] - '0') + (token_buf[4] - '0') * 10;
+				printf("INDEX: %d, %s\n", index, token_buf);
 				results[index]++;
 
 				token_buf = strtok(NULL, "[];");
@@ -140,7 +137,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 					return -1;
 				}
 			}
-			
+
 			return 1;
 			break;
 		default:
@@ -292,7 +289,8 @@ void parceLine(char *input)
 	int f_num = -1;
 	int _int = -1;
 	time_t *tim = NULL, start = 0, end = 0;
-	int stroks[99];
+	int* stroks = (int*)malloc(100*sizeof(int));
+	mallocCount++;
 
 	if (lixCount != 0)
 	{
@@ -308,8 +306,15 @@ void parceLine(char *input)
 
 			for (int i = 1; i < lixCount; i++)
 			{
-
+				for (int j = 0; j < 100; j++)
+				{
+					stroks[j] = 0;
+				}
+				
 				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
+
+				printf("[%s]%d\nf_num = %d, x = %d\n", wrd[i], i, f_num, x);
+
 				if (x == -1)
 				{
 					error(input);
@@ -318,6 +323,7 @@ void parceLine(char *input)
 				else
 				{
 					whatToSearch[f_num]++;
+					printf("update whatToSearch\n");
 					switch (f_num)
 					{
 					case 0:
@@ -339,6 +345,12 @@ void parceLine(char *input)
 						end = *tim;
 						break;
 					case 6:
+						printf("Error here\n");
+						for (int i = 0; i < 100; i++)
+						{
+							printf("%d",stroks[i]);
+						}
+						printf("\nError here\n");
 						break;
 					default:
 						error(input);

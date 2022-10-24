@@ -310,8 +310,6 @@ void parceLine(char *input)
 				
 				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
 
-				printf("[%s]%d\nf_num = %d, x = %d\n", wrd[i], i, f_num, x);
-
 				if (x == -1)
 				{
 					error(input);
@@ -320,7 +318,6 @@ void parceLine(char *input)
 				else
 				{
 					whatToSearch[f_num]++;
-					printf("update whatToSearch\n");
 					switch (f_num)
 					{
 					case 0:
@@ -342,12 +339,6 @@ void parceLine(char *input)
 						end = *tim;
 						break;
 					case 6:
-						printf("Error here\n");
-						for (int i = 0; i < 100; i++)
-						{
-							printf("%d",stroks[i]);
-						}
-						printf("\nError here\n");
 						break;
 					default:
 						error(input);

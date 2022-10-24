@@ -483,9 +483,9 @@ int selectFunc(char whatToPrint[7], Condition* conditions[7])
 					printf("end_tm:%s ", formateTime(tmp->end_tm));
 					break;
 				case 6:
+					printf("result:[ ");
 					for (int j = 0; j < 99; j++)
 					{
-						printf("result:[ ");
 						if (tmp->result[j] == 1)
 						{
 							if(j > 9)
@@ -493,8 +493,8 @@ int selectFunc(char whatToPrint[7], Condition* conditions[7])
 							else
 								printf("test0%d, ", j + 1);
 						}
-						printf("]");
-					}					
+					}			
+					printf("]");
 					break;
 				case -1:
 					break;

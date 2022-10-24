@@ -326,13 +326,20 @@ void printElement(DataBaseElement* elem)
 	printf("Element:\n\tfirst_nm=%s\n\tlast_nm=%s\n\tcurse_id=%d\nlab_id=%d\n\t",
 		elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
 	printf("start_tm=%s\t", asctime(gmtime(&(elem->start_tm))));
-	printf("end_tm%s\tResults\n", asctime(gmtime(&(elem->end_tm))));
-	for (int i = 0; i < 99; i++)
+	printf("end_tm%s\t", asctime(gmtime(&(elem->end_tm))));
+	printf("result=[ ");
+	for (int j = 0; j < 99; j++)
 	{
-		printf("%d ", elem->result[i]);
+		if (elem->result[j] == 1)
+		{
+			if (j > 9)
+				printf("test%d, ", j + 1);
+			else
+				printf("test0%d, ", j + 1);
+		}
+		
 	}
-
-	printf("\n");
+	printf("]\n");
 }
 
 void printDataBase()

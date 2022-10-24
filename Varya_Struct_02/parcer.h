@@ -273,6 +273,7 @@ void error(char *input)
 
 	printf("\nnot correct\n");
 	printf("%s\n", buf);
+	saveStats();
 }
 
 void parceLine(char *input)
@@ -301,13 +302,13 @@ void parceLine(char *input)
 				exit(100);
 			}
 
+			for (int j = 0; j < 100; j++)
+			{
+				stroks[j] = 0;
+			}
+
 			for (int i = 1; i < lixCount; i++)
 			{
-				for (int j = 0; j < 100; j++)
-				{
-					stroks[j] = 0;
-				}
-				
 				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
 
 				if (x == -1)

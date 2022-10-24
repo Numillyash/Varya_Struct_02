@@ -46,6 +46,7 @@ int main(int argc, char **argv)
     {
         printf("> ");
         gets(WRead);
+        // Тут уже есть в парслайне обработка на exit, эту нужно убрать
         if (!strcmp("stop", WRead))
         {
             break;

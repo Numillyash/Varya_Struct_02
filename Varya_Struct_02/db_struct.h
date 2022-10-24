@@ -323,7 +323,7 @@ void deleteElementFromDB(DataBaseElement* elem)
 
 void printElement(DataBaseElement* elem)
 {
-	printf("Element:\n\tfirst_nm=%s\n\tlast_nm=%s\n\tcurse_id=%d\nlab_id=%d\n\t",
+	printf("Element:\n\tfirst_nm=%s\n\tlast_nm=%s\n\tcurse_id=%d\n\tlab_id=%d\n\t",
 		elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
 	printf("start_tm=%s\t", asctime(gmtime(&(elem->start_tm))));
 	printf("end_tm%s\t", asctime(gmtime(&(elem->end_tm))));
@@ -428,9 +428,9 @@ restartCycle:
 	{
 		if (isElementRespondConditions(tmp, conditions))
 		{
-			goto restartCycle;
 			deleteElementFromDB(tmp);
 			count++;
+			goto restartCycle;
 		}
 		tmp = tmp->nextElement;
 	}

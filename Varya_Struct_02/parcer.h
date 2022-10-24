@@ -3,6 +3,7 @@
 
 int workMode(char *y)
 {
+	printf("workmode: %s\n", y);
 	const char *com[6] = {"insert", "select", "delete", "update", "uniq", "exit"};
 	for (int i = 0; i < 6; i++)
 	{
@@ -166,6 +167,7 @@ int parceCondition(char *line, Condition *conditions[7])
 			return -1;
 		conditions[x] = a;
 		int st1Len = strlen(st1), i = 0;
+		printf("CParcer Case: %d\n", x);
 		switch (x)
 		{
 		case 0:
@@ -290,9 +292,12 @@ void parceLine(char *input)
 	int* stroks = (int*)malloc(100*sizeof(int));
 	mallocCount++;
 
+	printf("GOT THERE\n");
+
 	if (lixCount != 0)
 	{
 		int x = workMode(wrd[0]);
+		printf("WM: %d\n", x);
 		switch (x)
 		{
 		case 1: // insert
@@ -357,6 +362,20 @@ void parceLine(char *input)
 				}
 			}
 			putElementToDB(family, name, ints[0], ints[1], &start, &end, stroks);
+			break;
+		case 3: //TODO: DELETE
+			;
+			Condition* conditions[7] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+			printf("DELEETE!\n");
+			
+			for (int i = 1; i < lixCount; i++)
+			{
+				int res = parceCondition(wrd[i], conditions);
+				printf("Condition %d: %d\n", i, res);
+			}
+			
+			printf("Parsed All Conditions!\n");
+			deleteFunc(conditions);
 			break;
 		case 5: // uniq
 			if (lixCount > 7)

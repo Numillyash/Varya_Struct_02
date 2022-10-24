@@ -55,7 +55,7 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 	if (field_num != -1)
 	{
 		char *st1 = strtok(line, "=");
-		char *st2 = strtok(NULL, "=");
+		char *st2 = strtok(NULL, "="); 
 		switch (field_num)
 		{
 		case 0:
@@ -99,9 +99,43 @@ int parceField(char *line, int *_field_num, char **_string, int *_int, time_t **
 				return -1;
 			}
 			return 1;
+		
 		case 6:
+		;
+			
+			char* tmp_buf = st2;
+			char* token_buf = strtok(tmp_buf, "[];");
+
+			int iteration = 1;
+			while(token_buf != NULL)
+			{				
+				// check token reliability
+				if (strlen(token_buf) != 6 || strncmp("test", token_buf, 4))
+				{
+					return -1;
+				}
+				if(!(token_buf[4]<='9' && token_buf[4]>='0' && token_buf[5]<='9' && token_buf[5]>='0'))
+				{
+					return -1;
+				}
+
+				int index = (token_buf[5] - '0') + (token_buf[4] - '0') * 10;
+				results[index]++;
+
+				token_buf = strtok(NULL, "[];");
+				iteration++;
+			}
+		
 			*_field_num = field_num;
-			results[0] = 0;
+			for (int i = 0; i < 100; i++)
+			{
+				if (results[i] > 1)
+				{
+					return -1;
+				}
+			}
+
+			return 1;
 			break;
 		default:
 			break;
@@ -116,7 +150,7 @@ int parceCondition(char *line, Condition *conditions[7])
 	int x = !strncmp(line, "result", 6);
 	if (x)
 	{
-		// ��������� ���������
+		// char* buf = strtok(line, "");
 	}
 	else
 	{
@@ -252,7 +286,8 @@ void parceLine(char *input)
 	int f_num = -1;
 	int _int = -1;
 	time_t *tim = NULL, start = 0, end = 0;
-	int stroks[99];
+	int* stroks = (int*)malloc(100*sizeof(int));
+	mallocCount++;
 
 	if (lixCount != 0)
 	{
@@ -268,8 +303,13 @@ void parceLine(char *input)
 
 			for (int i = 1; i < lixCount; i++)
 			{
-
+				for (int j = 0; j < 100; j++)
+				{
+					stroks[j] = 0;
+				}
+				
 				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
+
 				if (x == -1)
 				{
 					error(input);

@@ -29,21 +29,21 @@ typedef struct _condition
 
 typedef struct _dbElement
 {
-	// Фамилия
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	char* last_nm;
-	// Имя
+	// пїЅпїЅпїЅ
 	char* first_nm;
-	// Курс
+	// пїЅпїЅпїЅпїЅ
 	int curse_id;
-	// ID лабораторной
+	// ID пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	int lab_id;
-	// Время начала тестирования
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	time_t start_tm;
-	// Время окончания тестирования
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	time_t end_tm;
-	// Множество: пройденные тесты (99)
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (99)
 	int* result;
-	// Следующий элемент списка
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	struct _dbElement* nextElement;
 }DataBaseElement;
 
@@ -110,21 +110,21 @@ int isStringOneOf(char* string, Condition* condition)
 
 int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 {
-	// Проверка на фамилию
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if (conditions[0] != NULL)
 	{
 		if (conditions[0]->condition == stringIsOneOf)
 			if (!isStringOneOf(elem->last_nm, conditions[0]))
 				return 0;
 	}
-	// Проверка на имя
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	if (conditions[1] != NULL)
 	{
 		if (conditions[0]->condition == stringIsOneOf)
 			if (!isStringOneOf(elem->first_nm, conditions[0]))
 				return 0;
 	}
-	// Проверка на курс
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 	if (conditions[2] != NULL)
 	{
 		switch (conditions[2]->condition)
@@ -151,7 +151,7 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 			break;
 		}
 	}
-	// Проверка на ID лабораторной
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ID пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if (conditions[3] != NULL)
 	{
 		switch (conditions[3]->condition)
@@ -178,7 +178,7 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 			break;
 		}
 	}
-	// Проверка на время начала теста
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	if (conditions[4] != NULL)
 	{
 		switch (conditions[4]->condition)
@@ -205,7 +205,7 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 			break;
 		}
 	}
-	// Проверка на время конца теста
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	if (conditions[5] != NULL)
 	{
 		switch (conditions[5]->condition)
@@ -232,7 +232,7 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 			break;
 		}
 	}
-	// Проверка на результаты
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if (conditions[6] != NULL)
 	{
 		switch (conditions[6]->condition)
@@ -254,12 +254,13 @@ int isElementRespondConditions(DataBaseElement* elem, Condition* conditions[7])
 	return 1;
 }
 
-int putElementToDB(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, int results[99])
+int putElementToDB(char* lastName, char* firstName, int course, int labID, time_t* startTime, time_t* endTime, int* results)
 {
 	DataBaseElement* newElement = (DataBaseElement*)malloc(sizeof(DataBaseElement));
 	if (newElement == NULL)
 		return ALLOC_FAILURE;
 	mallocCount++;
+
 
 	char* family = (char*)malloc(sizeof(char) * strlen(lastName));
 	strcpy(family, lastName);
@@ -273,6 +274,10 @@ int putElementToDB(char* lastName, char* firstName, int course, int labID, time_
 	newElement->curse_id = course;
 	newElement->lab_id = labID;
 	newElement->result = results;
+
+	// newElement->result = *results; <--- it was like that
+	// so you're writing first element value to newElement->result <--- which is incrorrect
+
 	newElement->start_tm = *startTime;
 	newElement->end_tm = *endTime;
 	newElement->nextElement = NULL;
@@ -322,10 +327,11 @@ void printElement(DataBaseElement* elem)
 		elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
 	printf("%s\t", asctime(gmtime(&(elem->start_tm))));
 	printf("%s\tResults\n", asctime(gmtime(&(elem->end_tm))));
-	/*for (int i = 0; i < 99; i++)
+	for (int i = 0; i < 99; i++)
 	{
 		printf("%d ", elem->result[i]);
-	}*/
+	}
+
 	printf("\n");
 }
 
@@ -344,7 +350,7 @@ int deleteNonUniqElements(char whatToDelete[7])
 	char* needToDel = (char*)malloc(sizeof(char) * dataBaseSize);
 	mallocCount++;
 
-	// Цикл проверок
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	DataBaseElement* tmp = head;
 	DataBaseElement* tmp2 = head;
 	int currInd = 0;
@@ -364,7 +370,7 @@ int deleteNonUniqElements(char whatToDelete[7])
 										needToDel[currInd] = 1;
 										//printf("%d currind, %d, %d\n", currInd,tmp->lab_id, tmp2->lab_id);
 									}
-			// Добавить сравнение по тестам
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			tmp2 = tmp2->nextElement;
 		}
 		tmp = tmp->nextElement;
@@ -435,8 +441,8 @@ char* formateTime(time_t time)
 /// <summary>
 /// 
 /// </summary>
-/// <param name="whatToPrint">Указываются номера как порядок выводимых значений
-/// ,-1 для пустых мест (НЕ NULL)
+/// <param name="whatToPrint">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+/// ,-1 пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (пїЅпїЅ NULL)
 /// </param>
 /// <param name="conditions"></param>
 int selectFunc(char whatToPrint[7], Condition* conditions[7])

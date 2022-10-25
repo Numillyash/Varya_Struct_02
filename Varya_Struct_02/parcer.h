@@ -3,7 +3,7 @@
 
 int workMode(char *y)
 {
-	printf("workmode: %s\n", y);
+	// printf("workmode: %s\n", y);
 	const char *com[6] = {"insert", "select", "delete", "update", "uniq", "exit"};
 	for (int i = 0; i < 6; i++)
 	{
@@ -394,6 +394,7 @@ void parceLine(char *input)
 	time_t *tim = NULL, start = 0, end = 0;
 	int *stroks = (int *)malloc(100 * sizeof(int));
 	mallocCount++;
+	Condition *conditions[7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
 	printf("GOT THERE\n");
 
@@ -466,9 +467,68 @@ void parceLine(char *input)
 			}
 			putElementToDB(family, name, ints[0], ints[1], &start, &end, stroks);
 			break;
+
+		case 2:
+			;
+			// parce fields
+			for (int i = 1; i <= (lixCount - 1) / 2; i++)
+			{
+				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
+				printf("parsing: %s\n", wrd[i]);
+				if (x == -1)
+				{
+					// error(input);
+					// exit(100);
+				}
+				else
+				{
+					whatToSearch[f_num]++;
+					switch (f_num)
+					{
+					case 0:
+						strcpy(family, str);
+						break;
+					case 1:
+						strcpy(name, str);
+						break;
+					case 2:
+						ints[0] = _int;
+						break;
+					case 3:
+						ints[1] = _int;
+						break;
+					case 4:
+						start = *tim;
+						break;
+					case 5:
+						end = *tim;
+						break;
+					case 6:
+						break;
+					default:
+						error(input);
+						exit(100);
+						break;
+					}
+				}
+			}
+			
+			// parce conditions
+			Condition *conditions[7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+
+			for (int i = (lixCount - 1) / 2 + 1; i < lixCount; i++)
+			{
+				int res = parceCondition(wrd[i], conditions);
+				printf("Condition %d: %d\n", i, res);
+			}
+
+			printf("Parsed All Conditions!\n");
+			selectFunc(whatToSearch, conditions);
+
+			break;
+		
 		case 3: // TODO: DELETE
 			;
-			Condition *conditions[7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 			printf("DELEETE!\n");
 
 			for (int i = 1; i < lixCount; i++)

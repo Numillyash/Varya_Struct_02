@@ -554,6 +554,7 @@ int selectFunc(char whatToPrint[7], Condition *conditions[7])
 				case -1:
 					break;
 				}
+				printf("\n");
 			}
 
 			printf("\n");

@@ -396,12 +396,9 @@ void parceLine(char *input)
 	mallocCount++;
 	Condition *conditions[7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
-	printf("GOT THERE\n");
-
 	if (lixCount != 0 && strlen(input) != 0)
 	{
 		int x = workMode(wrd[0]);
-		printf("WM: %d\n", x);
 		switch (x)
 		{
 		case 1: // insert
@@ -474,7 +471,6 @@ void parceLine(char *input)
 			for (int i = 1; i <= (lixCount - 1) / 2; i++)
 			{
 				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
-				printf("parsing: %s\n", wrd[i]);
 				if (x == -1)
 				{
 					// error(input);
@@ -519,25 +515,20 @@ void parceLine(char *input)
 			for (int i = (lixCount - 1) / 2 + 1; i < lixCount; i++)
 			{
 				int res = parceCondition(wrd[i], conditions);
-				printf("Condition %d: %d\n", i, res);
 			}
 
-			printf("Parsed All Conditions!\n");
 			selectFunc(whatToSearch, conditions);
 
 			break;
 		
 		case 3: // TODO: DELETE
 			;
-			printf("DELEETE!\n");
 
 			for (int i = 1; i < lixCount; i++)
 			{
 				int res = parceCondition(wrd[i], conditions);
-				printf("Condition %d: %d\n", i, res);
 			}
 
-			printf("Parsed All Conditions!\n");
 			deleteFunc(conditions);
 			break;
 		case 5: // uniq

@@ -510,7 +510,6 @@ void parceLine(char *input)
 			}
 			
 			// parce conditions
-			Condition *conditions[7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
 			for (int i = (lixCount - 1) / 2 + 1; i < lixCount; i++)
 			{
@@ -521,7 +520,7 @@ void parceLine(char *input)
 
 			break;
 		
-		case 3: // TODO: DELETE
+		case 3: // DELETE
 			;
 
 			for (int i = 1; i < lixCount; i++)
@@ -530,6 +529,59 @@ void parceLine(char *input)
 			}
 
 			deleteFunc(conditions);
+			break;
+
+		case 4: // UPDATE
+			;
+			for (int i = 1; i <= (lixCount - 1) / 2; i++)
+			{
+				x = parceField(wrd[i], &f_num, &str, &_int, &tim, stroks);
+				if (x == -1)
+				{
+					error(input);
+					exit(100);
+				}
+				else
+				{
+					whatToSearch[f_num]++;
+					switch (f_num)
+					{
+					case 0:
+						strcpy(family, str);
+						break;
+					case 1:
+						strcpy(name, str);
+						break;
+					case 2:
+						ints[0] = _int;
+						break;
+					case 3:
+						ints[1] = _int;
+						break;
+					case 4:
+						start = *tim;
+						break;
+					case 5:
+						end = *tim;
+						break;
+					case 6:
+						break;
+					default:
+						error(input);
+						exit(100);
+						break;
+					}
+				}
+			}
+
+			// parce conditions
+
+			for (int i = (lixCount - 1) / 2 + 1; i < lixCount; i++)
+			{
+				int res = parceCondition(wrd[i], conditions);
+			}
+
+			updateFunc(family, name, ints[0], ints[1], &start, &end, stroks, conditions);
 			break;
 		case 5: // uniq
 			if (lixCount > 7)

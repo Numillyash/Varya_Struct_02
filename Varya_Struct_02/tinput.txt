@@ -1,5 +1,5 @@
 insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=2, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[test01;test02]
-insert last_nm=Ulanovsky, first_nm=George, curse_id=1, lab_id=3, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[]
+insert last_nm=Ulanovsky, first_nm=George, curse_id=1, lab_id=3, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[test04]
 insert last_nm=Ulanovsky, first_nm=George, curse_id=2, lab_id=4, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[test22;test11]
-insert last_nm=Fidarov, first_nm=German, curse_id=2, lab_id=4, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[test22;test11]
-delete last_nm!=Fidarov
+insert last_nm=Fidarov, first_nm=German, curse_id=2, lab_id=4, start_tm=2000.10.10!22:1:20, end_tm=2000.10.10!23:0:20, result=[test27;test11]
+delete result/include/[test11;test27]

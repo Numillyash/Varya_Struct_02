@@ -51,6 +51,26 @@ typedef struct _dbElement
 DataBaseElement *head;
 uint64_t dataBaseSize = 0;
 
+void printElement(DataBaseElement *elem)
+{
+	printf("Element:\n\tfirst_nm=%s\n\tlast_nm=%s\n\tcurse_id=%d\n\tlab_id=%d\n\t",
+		   elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
+	printf("start_tm=%s\t", asctime(gmtime(&(elem->start_tm))));
+	printf("end_tm%s\t", asctime(gmtime(&(elem->end_tm))));
+	printf("result=[ ");
+	for (int j = 0; j < 99; j++)
+	{
+		if (elem->result[j] == 1)
+		{
+			if (j > 9)
+				printf("test%d, ", j);
+			else
+				printf("test0%d, ", j);
+		}
+	}
+	printf("]\n");
+}
+
 int isResultsSame(DataBaseElement *e1, DataBaseElement *e2)
 {
 	for (int i = 0; i < 99; i++)
@@ -73,11 +93,29 @@ int isResultsOneOnly(DataBaseElement *elem, Condition *condition)
 
 int isResultsIncludeBoth(DataBaseElement *elem, Condition *condition)
 {
-	for (int i = 0; i < 99; i++)
+	for (int i = 1; i < 100; i++)
 	{
 		if (elem->result[i] != condition->compResults[i] && condition->compResults[i])
+		{
 			return 0;
+		}
 	}
+
+	// printf("Condition: ");
+	// for (size_t i = 0; i < 100; i++)
+	// {
+	// 	printf("%d", condition->compResults[i]);
+	// }
+	// printf("\n");
+
+	// printf("Element  : ");
+	// for (size_t i = 0; i < 100; i++)
+	// {
+	// 	printf("%d", elem->result[i]);
+	// }
+	// printf("\n");
+
+	// printElement(elem);
 	return 1;
 }
 
@@ -357,26 +395,6 @@ void deleteElementFromDB(DataBaseElement *elem)
 		free(tmp2);
 		freeCount++;
 	}
-}
-
-void printElement(DataBaseElement *elem)
-{
-	printf("Element:\n\tfirst_nm=%s\n\tlast_nm=%s\n\tcurse_id=%d\n\tlab_id=%d\n\t",
-		   elem->first_nm, elem->last_nm, elem->curse_id, elem->lab_id);
-	printf("start_tm=%s\t", asctime(gmtime(&(elem->start_tm))));
-	printf("end_tm%s\t", asctime(gmtime(&(elem->end_tm))));
-	printf("result=[ ");
-	for (int j = 0; j < 99; j++)
-	{
-		if (elem->result[j] == 1)
-		{
-			if (j > 9)
-				printf("test%d, ", j + 1);
-			else
-				printf("test0%d, ", j + 1);
-		}
-	}
-	printf("]\n");
 }
 
 void printDataBase()

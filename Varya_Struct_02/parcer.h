@@ -150,7 +150,99 @@ int parceCondition(char *line, Condition *conditions[7])
 	int x = !strncmp(line, "result", 6);
 	if (x)
 	{
-		// char* buf = strtok(line, "");
+		char *t = strchr(line, '=');
+		if (t != NULL)
+		{
+			char buf[1000], buf2[1000];
+			strcpy(buf, line);
+			char *st1 = strtok(buf, "<>!=");
+			char *st2 = strtok(NULL, "<>!=");
+			strcpy(buf2, line);
+			char *usl = strtok(buf2, "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiop[]asdfghjkl;'zxcvbnm,./1234567890-+_");
+			Condition *a = (Condition *)malloc(sizeof(Condition));
+			x = isField(st1);
+			if (x == -1)
+				return -1;
+			conditions[x] = a;
+			int st1Len = strlen(st1), i = 0;
+			a->compString = (char **)malloc(sizeof(char *));
+			mallocCount++;
+			a->compStringCount = 1;
+			char *strDop = (char *)malloc(sizeof(char) * 50);
+			mallocCount++;
+			strcpy(strDop, st2);
+			a->compString[0] = strDop;
+			if (!strcmp("==", usl))
+				a->condition = resultsAreOnly;
+			else if (!strcmp("!=", usl))
+				a->condition = resultsNotIncludeBoth;
+			else
+				return -1;
+			return 1;
+		}
+		else
+		{
+			Condition *a = (Condition *)malloc(sizeof(Condition));
+			mallocCount++;
+			x = 6;
+			conditions[x] = a;
+			char buf[10000];
+			strcpy(buf, line);
+			char *st1 = strtok(buf, "/");
+			char *usl = strtok(NULL, "/");
+			char *st2 = strtok(NULL, "/");
+
+			// printf("stroks: %s\n%s\n%s\n", st1, st2, usl);
+
+			if (!strcmp(usl, "in"))
+			{
+				a->condition = resultsIncludeAtLeastOne;
+			}
+			else if (!strcmp(usl, "include"))
+			{
+				a->condition = resultsIncludeBoth;
+			}
+			int *results = (int *)malloc(sizeof(int) * 100);
+			// result test
+			{
+				char *tmp_buf = st2;
+				char *token_buf = strtok(tmp_buf, "[];");
+				for (int i = 0; i < 100; i++)
+					results[i] = 0;
+				mallocCount++;
+				int iteration = 1;
+				while (token_buf != NULL)
+				{
+					// check token reliability
+					if (strlen(token_buf) != 6 || strncmp("test", token_buf, 4))
+					{
+						return -1;
+					}
+					if (!(token_buf[4] <= '9' && token_buf[4] >= '0' && token_buf[5] <= '9' && token_buf[5] >= '0'))
+					{
+						return -1;
+					}
+
+					int index = (token_buf[5] - '0') + (token_buf[4] - '0') * 10;
+					results[index]++;
+
+					token_buf = strtok(NULL, "[];");
+					iteration++;
+				}
+				for (int i = 0; i < 100; i++)
+				{
+					if (results[i] > 1)
+					{
+						return -1;
+					}
+				}
+			}
+			a->compResults = results;
+			// resultsAreOnly,
+			// resultsNotIncludeBoth,
+			// resultsIncludeBoth,
+			// resultsIncludeAtLeastOne,
+		}
 	}
 	else
 	{
@@ -175,12 +267,15 @@ int parceCondition(char *line, Condition *conditions[7])
 			mallocCount++;
 			a->compStringCount = 1;
 			char *strDop = (char *)malloc(sizeof(char) * 50);
+			mallocCount++;
 			strcpy(strDop, st2);
 			a->compString[0] = strDop;
 			if (!strcmp("==", usl))
 				a->condition = stringIsOneOf;
 			else if (!strcmp("!=", usl))
 				a->condition = stringIsNotOneOf;
+			else
+				return -1;
 			return 1;
 		case 2:
 		case 3:
